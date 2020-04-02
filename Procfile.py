@@ -1,1 +1,1 @@
-gunicorn :'create_app()'
+web : gunicorn deploy:app
