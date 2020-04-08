@@ -48,4 +48,4 @@ def makeWebhookResult(speech):
     }
 
 if __name__ == '__main__':
-    app.run(port= 80)    
+    app.run(host='0.0.0.0',port=443,debug=True,ssl_context=('cert.pem', 'key.pem') )  
