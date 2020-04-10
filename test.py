@@ -16,31 +16,30 @@ def COVID_TODAY():
     covid = json_data['Confirmed']
     return covid
 
-@app.route('/webhook', methods=['POST','GET'])
+@app.route('/webhook',methods = ['POST'])
 def webhook():
-        if request.method == 'POST':
-            payload = request.json
-            print(payload)
-            Reply_token = payload['events'][0]['replyToken']
-            print(Reply_token)
-            message = payload['events'][0]['message']['text']
-            print(message)
-            if "btc" in message :
-                Reply_messasge = 'ราคา BITCOIN ขณะนี้ : {}'.format(GET_BTC_PRICE())
-                ReplyMessage(Reply_token,Reply_messasge,Channel_access_token)
-            
-            elif "โควิด" in message :
-                Reply_messasge = 'ผู้ป่วยสะสมวันนี้ของโควิด: {}'.format(COVID_TODAY())
-                ReplyMessage(Reply_token,Reply_messasge,Channel_access_token)
-            
-            return request.json, 200
+    if request.method == 'POST':
+        payload = request.json
+        print(payload)
+        Reply_token = payload['events'][0]['replyToken']
+        print(Reply_token)
+        message = payload['events'][0]['message']['text']
+        print(message)
+        if "btc" in message :
+            Reply_messasge = 'ราคา BITCOIN ขณะนี้ : {}'.format(GET_BTC_PRICE())
+            ReplyMessage(Reply_token,Reply_messasge,Channel_access_token)
+        
+        elif "โควิด" in message :
+            Reply_messasge = 'ผู้ป่วยสะสมวันนี้ของโควิด: {}'.format(COVID_TODAY())
+            ReplyMessage(Reply_token,Reply_messasge,Channel_access_token)
+    
+        return request.json, 200
 
-        elif request.method == 'GET' :
-            return 'this is method GET!!!' , 200
-            
+    elif request.method == 'GET' :
+        return 'this is method GET!!!' , 200
 
-        else:
-            abort(400)
+    else:
+        abort(400)
 
 
 
@@ -71,5 +70,5 @@ def ReplyMessage(Reply_token, TextMessage, Line_Acees_Token):
     return 200
 
 if __name__ == '__main__':
-    app.run(port=80)   
+    app.run(host='0.0.0.0',port=80,)   
     # ssl_context=('cert.pem', 'key.pem')
