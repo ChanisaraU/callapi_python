@@ -16,7 +16,7 @@ def COVID_TODAY():
     covid = json_data['Confirmed']
     return covid
 
-@app.route('/webhook',methods = ['POST'])
+@app.route('/',methods = ['POST','GET'])
 def webhook():
     if request.method == 'POST':
         payload = request.json
@@ -43,7 +43,7 @@ def webhook():
 
 
 
-@app.route('/')
+@app.route('/webhook')
 def hello():
     return 'get 443',200
 
@@ -70,5 +70,5 @@ def ReplyMessage(Reply_token, TextMessage, Line_Acees_Token):
     return 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=80,)   
+    app.run(host='0.0.0.0',port=5000,ssl_context=('cert.pem', 'key.pem'))   
     # ssl_context=('cert.pem', 'key.pem')
