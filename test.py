@@ -5,10 +5,11 @@ import json
 Channel_access_token = 'Yytu/+0UOeK6Wgu9Hk5Yikvgtw4hNpSRc4e93WFPckljMll+7/ne/5KUgSCY7/Nf5/+VQQVL48ElnmFbYEbm8C805tphw+6L+2lct/lxU/mVxnsL0hSLVnCZXo0Y+ULakDfKBwvMyrhA2Olj7dvqdgdB04t89/1O/w1cDnyilFU='
 app = Flask(__name__)
 
-def GET_BTC_PRICE():
-    data = requests.get('https://bx.in.th/api/')
-    BTC_PRICE = data.text.split('BTC')[1].split('last_price":')[1].split(',"volume_24hours')[0]
-    return BTC_PRICE
+def COVID_NEW():
+    data = requests.get('https://covid19.th-stat.com/api/open/today')
+    json_data = json.loads(data.text)
+    covid = json_data['NewConfirmed']
+    return covid
 
 def COVID_TODAY():
     data = requests.get('https://covid19.th-stat.com/api/open/today')
@@ -25,8 +26,8 @@ def webhook():
         print(Reply_token)
         message = payload['events'][0]['message']['text']
         print(message)
-        if "btc" in message :
-            Reply_messasge = 'ราคา BITCOIN ขณะนี้ : {}'.format(GET_BTC_PRICE())
+        if "new" in message :
+            Reply_messasge = 'ผู้ป่วยรายใหม่วันนี้ : {}'.format(COVID_NEW())
             ReplyMessage(Reply_token,Reply_messasge,Channel_access_token)
         
         elif "โควิด" in message :
@@ -70,5 +71,5 @@ def ReplyMessage(Reply_token, TextMessage, Line_Acees_Token):
     return 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000,ssl_context=('cert.pem', 'key.pem'))   
+    app.run(port=80)   
     # ssl_context=('cert.pem', 'key.pem')
